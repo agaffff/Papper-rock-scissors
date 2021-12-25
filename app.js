@@ -1,7 +1,8 @@
 var choice = require('./choice.js');
 var winner = require('./winner.js');
-var generateTable = require('./generateTable.js');
+var generateMenu = require('./generateMenu.js');
 var generateKey = require('./generateKey');
+var checkError = require('./checkError.js');
 
 isDigit = true;
 errorText = 'You entered incorrect value!\nGame ower!';
@@ -11,22 +12,21 @@ function isNumber(n) {
 }
 
 async function main(str) {
+    if(!checkError.checkCountArg(str))
+    return
     key256 = generateKey.HMAC(generateKey.generateGuid());
-
-    generateTable.createMenu(str);
-
+    generateMenu.createMenu(str);
+    winner.fillTableHelp(str);
     compStep = choice.сhoiceComp();
     console.log('HMAC:' + generateKey.HMAC(key256 + compStep));
-
-
-    generateTable.viewMenu();
+    generateMenu.viewMenu();
     userStep = await choice.choiceUser();
 
     if (!isNumber(userStep)) {
         this.isDigit = false;
         if (userStep == '?') {
             winner.help();
-            generateTable.arrMenu.length = 0;
+            generateMenu.arrMenu.length = 0;
             main(str);
             return;
         }
@@ -35,7 +35,7 @@ async function main(str) {
             return;
         }
 
-        let res = generateTable.arrMenu.indexOf(userStep);
+        let res = generateMenu.arrMenu.indexOf(userStep);
         if (res < 0) {
             console.log(errorText);
             return
@@ -46,7 +46,7 @@ async function main(str) {
             console.log(errorText);
             return
         }
-        if (generateTable.arrMenu.length < userStep) {
+        if (generateMenu.arrMenu.length < userStep) {
             console.log(errorText);
             return;
         }
@@ -56,13 +56,10 @@ async function main(str) {
         console.log('Exit game!');
         return
     }
-
-    let win = winner.getWinner(--userStep, compStep);
-
-    console.log("Your move:" + generateTable.arrMenu[userStep]);
-    console.log("Computer move:" + generateTable.arrMenu[compStep]);
+    let win = winner.getWinner(userStep, compStep);
+    console.log("Your move:" + generateMenu.arrMenu[--userStep]);
+    console.log("Computer move:" + generateMenu.arrMenu[--compStep]);
     console.log(win);
     console.log('HMAC key:' + key256);
 }
-
 main(process.argv.slice(2));

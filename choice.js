@@ -1,6 +1,6 @@
 const readline = require('readline');
 
-var generateTable = require('./generateTable.js');
+var generateMenu = require('./generateMenu.js');
 
 exports.choiceUser=function () {
     return new Promise(resolve => {
@@ -16,6 +16,6 @@ exports.choiceUser=function () {
 }
 
 exports.сhoiceComp=function () {
-    let rand = Math.floor(Math.random() * generateTable.arrMenu.length)
+    let rand = Math.floor(Math.random() * generateMenu.arrMenu.length)+1
     return rand;
 }
