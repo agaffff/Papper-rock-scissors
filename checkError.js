@@ -1,12 +1,15 @@
 exports.checkCountArg = function (aMenu) {
-
+    if (aMenu.length == 0) {
+        console.log('error: not argument');
+        return false;
+    }
     if (aMenu.length == 1) {
-        console.log('you entered one argument');
+        console.log('error: you entered one argument');
         return false;
     }
 
     if (aMenu.length % 2 == 0) {
-        console.log('you entered an even number');
+        console.log('error: you entered an even number');
         return false;
     }
 
@@ -14,8 +17,8 @@ exports.checkCountArg = function (aMenu) {
         return index === aMenu.indexOf(item);
     })
 
-    if(uniqArray.length != aMenu.length ){
-        console.log('you entered duplicates');
+    if (uniqArray.length != aMenu.length) {
+        console.log('error: you entered duplicates');
         return false;
     }
 
